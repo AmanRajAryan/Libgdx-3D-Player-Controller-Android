@@ -1,0 +1,61 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="aman.three"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="14"
+9        android:targetSdkVersion="33" />
+10
+11    <uses-feature
+11-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:5:5-78
+12        android:glEsVersion="0x00020000"
+12-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:5:19-51
+13        android:required="true" />
+13-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:5:52-75
+14
+15    <application
+15-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:7:5-27:19
+16        android:allowBackup="true"
+16-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:8:9-35
+17        android:appCategory="game"
+17-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:12:9-35
+18        android:debuggable="true"
+19        android:extractNativeLibs="true"
+20        android:fullBackupContent="true"
+20-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:9:9-41
+21        android:icon="@drawable/ic_launcher"
+21-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:10:9-45
+22        android:isGame="true"
+22-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:11:9-30
+23        android:label="@string/app_name"
+23-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:13:9-41
+24        android:theme="@style/AppTheme" >
+24-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:14:9-40
+25        <activity
+25-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:16:9-26:20
+26            android:name="aman.three.AndroidLauncher"
+26-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:17:13-54
+27            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
+27-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:20:13-107
+28            android:exported="true"
+28-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:21:13-36
+29            android:label="@string/app_name"
+29-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:18:13-45
+30            android:screenOrientation="landscape" >
+30-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:19:13-50
+31            <intent-filter>
+31-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:22:13-25:29
+32                <action android:name="android.intent.action.MAIN" />
+32-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:23:17-69
+32-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:23:25-66
+33
+34                <category android:name="android.intent.category.LAUNCHER" />
+34-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:24:17-77
+34-->/data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:24:27-74
+35            </intent-filter>
+36        </activity>
+37    </application>
+38
+39</manifest>

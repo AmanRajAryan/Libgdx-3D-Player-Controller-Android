@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "aman.three.android-mergeDebugResources-2:/values-v21/values-v21.xml",
+            "map": [
+                {
+                    "source": "/data/data/com.itsaky.androidide/files/home/mygame/android/res/values-v21/styles.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "231"
+                    }
+                }
+            ]
+        }
+    ]
+}
