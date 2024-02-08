@@ -319,11 +319,8 @@ public class MyGame extends ApplicationAdapter
     private void calculateAngleAroundPlayer() {
         float angleChange = Gdx.input.getDeltaX() * Settings.CAMERA_ANGLE_AROUND_PLAYER_FACTOR;
 
-        if (cameraMode == CameraMode.FREE_LOOK) {
             angleAroundPlayer -= angleChange;
-        } else {
-            angleAroundPlayer = angleBehindPlayer;
-        }
+        
         
         if(sprinting)
         playerScene.modelInstance.transform.rotate(Vector3.Y, -angleChange);

@@ -10,27 +10,21 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
-import com.badlogic.gdx.graphics.g3d.utils.FirstPersonCameraController;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.shapebuilders.BoxShapeBuilder;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 import net.mgsx.gltf.loaders.glb.GLBLoader;
 import net.mgsx.gltf.scene3d.attributes.PBRColorAttribute;
@@ -71,7 +65,7 @@ public class MyGame extends ApplicationAdapter
     private float distanceFromPlayer = 20f;
     private float angleAroundPlayer = 0f;
     private float angleBehindPlayer = 0f;
-    FirstPersonCameraController cameraController;
+    
 
     // touchpad
     Stage stage;
@@ -106,8 +100,8 @@ public class MyGame extends ApplicationAdapter
                             sprinting = false;
                         } else {
                             sprinting = true;
+                          //  playerRotationToFaceInCameraDirectionWhenSprinted();
                             
-                            rotatePlayerInCamDirection();
                         
                         }
 
@@ -136,11 +130,9 @@ public class MyGame extends ApplicationAdapter
         // Gdx.input.setCursorCatched(true);
         // Gdx.input.setInputProcessor(this);
 
-        cameraController = new FirstPersonCameraController(camera);
 
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(stage);
-        //  inputMultiplexer.addProcessor(cameraController);
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         // setup light
@@ -185,11 +177,8 @@ public class MyGame extends ApplicationAdapter
         processInput(deltaTime);
         updateCamera();
 
-        cameraController.update();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-            playerScene.animationController.action("jump", 1, 1f, this, 0.5f);
-
+        
         // render
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         sceneManager.update(deltaTime);
@@ -215,7 +204,7 @@ public class MyGame extends ApplicationAdapter
             moveTranslation.z -= speed * deltaTime;
         }
 
-        moveTranslation.z += touchpad.getTouchpad().getKnobPercentY() * speed * deltaTime;
+       // moveTranslation.z += touchpad.getTouchpad().getKnobPercentY() * speed * deltaTime;
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             playerTransform.rotate(Vector3.Y, rotationSpeed * deltaTime);
@@ -241,6 +230,76 @@ public class MyGame extends ApplicationAdapter
             }
         }
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+                
+            if (touchpad.getTouchpad().getKnobPercentY() > 0)
+            {
+               moveTranslation.z += touchpad.getTouchpad().getKnobPercentY() * speed * deltaTime;
+            
+                 
+            }
+
+            if (touchpad.getTouchpad().getKnobPercentY() < 0)
+            {
+                //first we determine maximum speed of rapidly turning towards the camera
+                float rapidRotationMax = rotationSpeed * 0.25f;
+
+                //we get the difference between camera angle and the angle begind the player
+                float diff = angleAroundPlayer-angleBehindPlayer;
+                if (diff > 360) diff-=360;
+                if (diff < 0) diff+=360;
+
+                diff-=180;
+
+                //we want that difference to be 180 degrees, for when the dog is facing the camera the angleBehindPlayer is 180 decrees I think.
+                if ((diff > 0.5f) || (diff < 0.5f)) {
+                    if (diff > rapidRotationMax) diff = rapidRotationMax;
+                    if (diff < -rapidRotationMax) diff = -rapidRotationMax;
+
+                    //and then we turn
+                    playerTransform.rotate(Vector3.Y, diff);
+                    angleBehindPlayer += diff;
+
+                    //and move forwards
+                    moveTranslation.z -= touchpad.getTouchpad().getKnobPercentY() * speed * deltaTime;
+                }
+                else {
+
+                    //the angle behind player is pointing away from the camera, so normal movement mode
+                    moveTranslation.z += touchpad.getTouchpad().getKnobPercentY() * speed * deltaTime;
+                }
+            }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         if (sprinting) {
 
             moveTranslation.z += 5f * deltaTime;
@@ -319,18 +378,20 @@ public class MyGame extends ApplicationAdapter
     private void calculateAngleAroundPlayer() {
         float angleChange = Gdx.input.getDeltaX() * Settings.CAMERA_ANGLE_AROUND_PLAYER_FACTOR;
 
-        if (cameraMode == CameraMode.FREE_LOOK) {
             angleAroundPlayer -= angleChange;
-        } else {
-            angleAroundPlayer = angleBehindPlayer;
-        }
+        
         
         if(sprinting)
         playerScene.modelInstance.transform.rotate(Vector3.Y, -angleChange);
     }
 
-    public void rotatePlayerInCamDirection() {
-    	playerTransform.rotate(Vector3.Y , camera.direction);
+    public void playerRotationToFaceInCameraDirectionWhenSprinted() {
+        Vector3 cameraDirection = camera.direction;
+        float angle =
+                MathUtils.atan2(cameraDirection.x, cameraDirection.z) * MathUtils.radiansToDegrees;
+
+        // Rotate the character around the Y-axis to face the camera direction
+        playerScene.modelInstance.transform.setToRotation(Vector3.Y, angle);
     }
 
     private void calculatePitch() {
