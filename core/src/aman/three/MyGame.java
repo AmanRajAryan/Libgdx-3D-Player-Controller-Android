@@ -243,7 +243,7 @@ public class MyGame extends ApplicationAdapter
 
         if (sprinting) {
 
-            moveTranslation.z += 1f * deltaTime;
+            moveTranslation.z += 5f * deltaTime;
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {

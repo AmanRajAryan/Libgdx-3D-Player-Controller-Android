@@ -4,7 +4,7 @@ ADDED from /data/data/com.itsaky.androidide/files/home/mygame/android/AndroidMan
 INJECTED from /data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:2:1-29:12
 INJECTED from /data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:2:1-29:12
 INJECTED from /data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:2:1-29:12
-MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.12.1] /data/data/com.itsaky.androidide/files/home/.gradle/caches/transforms-3/c2c60185be425c480640fcb7870daa1f/transformed/gdx-backend-android-1.12.1/AndroidManifest.xml:2:1-13:12
+MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.12.1] /data/data/com.itsaky.androidide/files/home/.gradle/caches/transforms-3/a99b8ca76a08c19977ed58d7389aaf75/transformed/gdx-backend-android-1.12.1/AndroidManifest.xml:2:1-13:12
 	package
 		INJECTED from /data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml
 	android:versionName
@@ -17,8 +17,8 @@ MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.12.1] /data/data/com.it
 		ADDED from /data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:2:11-69
 uses-feature#0x00020000
 ADDED from /data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:5:5-78
-MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.12.1] /data/data/com.itsaky.androidide/files/home/.gradle/caches/transforms-3/c2c60185be425c480640fcb7870daa1f/transformed/gdx-backend-android-1.12.1/AndroidManifest.xml:9:5-11:35
-MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.12.1] /data/data/com.itsaky.androidide/files/home/.gradle/caches/transforms-3/c2c60185be425c480640fcb7870daa1f/transformed/gdx-backend-android-1.12.1/AndroidManifest.xml:9:5-11:35
+MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.12.1] /data/data/com.itsaky.androidide/files/home/.gradle/caches/transforms-3/a99b8ca76a08c19977ed58d7389aaf75/transformed/gdx-backend-android-1.12.1/AndroidManifest.xml:9:5-11:35
+MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.12.1] /data/data/com.itsaky.androidide/files/home/.gradle/caches/transforms-3/a99b8ca76a08c19977ed58d7389aaf75/transformed/gdx-backend-android-1.12.1/AndroidManifest.xml:9:5-11:35
 	android:glEsVersion
 		ADDED from /data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml:5:19-51
 	android:required
@@ -70,8 +70,8 @@ uses-sdk
 INJECTED from /data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml
 INJECTED from /data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml
-MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.12.1] /data/data/com.itsaky.androidide/files/home/.gradle/caches/transforms-3/c2c60185be425c480640fcb7870daa1f/transformed/gdx-backend-android-1.12.1/AndroidManifest.xml:5:5-7:41
-MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.12.1] /data/data/com.itsaky.androidide/files/home/.gradle/caches/transforms-3/c2c60185be425c480640fcb7870daa1f/transformed/gdx-backend-android-1.12.1/AndroidManifest.xml:5:5-7:41
+MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.12.1] /data/data/com.itsaky.androidide/files/home/.gradle/caches/transforms-3/a99b8ca76a08c19977ed58d7389aaf75/transformed/gdx-backend-android-1.12.1/AndroidManifest.xml:5:5-7:41
+MERGED from [com.badlogicgames.gdx:gdx-backend-android:1.12.1] /data/data/com.itsaky.androidide/files/home/.gradle/caches/transforms-3/a99b8ca76a08c19977ed58d7389aaf75/transformed/gdx-backend-android-1.12.1/AndroidManifest.xml:5:5-7:41
 	android:targetSdkVersion
 		INJECTED from /data/data/com.itsaky.androidide/files/home/mygame/android/AndroidManifest.xml
 	android:minSdkVersion
