@@ -3,7 +3,6 @@ package aman.three;
 import static java.lang.Math.abs;
 import static java.lang.Math.atan2;
 
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -66,22 +65,20 @@ public class MyGame extends ApplicationAdapter
     private float distanceFromPlayer = 20f;
     private float angleAroundPlayer = 0f;
     private float angleBehindPlayer = 0f;
-    
 
     // touchpad
     Stage stage;
     TouchPad touchpad;
     Batch batch;
-    
-    
-    
-    
-    boolean inTouchpad; //Erkka: if the touch is in the touchpad, false otherwise
-    int deltaX; //Erkka: a helper variable to store how much the touch has been dragged sideways
-    float touchpadX; //Erkka: two more helper functions to store the touchpad knob position
-    float touchpadY;
-    float touchpadAngle; //Erkka: another helper function to store the touchpad angle. 0 for east, 90 for the north, so it is counter-clockwise
 
+    boolean inTouchpad; // Erkka: if the touch is in the touchpad, false otherwise
+    boolean isSprintBtnJustClicked = false;
+    int deltaX; // Erkka: a helper variable to store how much the touch has been dragged sideways
+    float touchpadX; // Erkka: two more helper functions to store the touchpad knob position
+    float touchpadY;
+    float
+            touchpadAngle; // Erkka: another helper function to store the touchpad angle. 0 for
+                           // east, 90 for the north, so it is counter-clockwise
 
     @Override
     public void create() {
@@ -110,10 +107,8 @@ public class MyGame extends ApplicationAdapter
                         if (sprinting) {
                             sprinting = false;
                         } else {
+                            isSprintBtnJustClicked = true;
                             sprinting = true;
-                          //  playerRotationToFaceInCameraDirectionWhenSprinted();
-                            
-                        
                         }
 
                         return true;
@@ -134,13 +129,12 @@ public class MyGame extends ApplicationAdapter
 
         camera = new PerspectiveCamera(60f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.near = 1f;
-        camera.far = 200;
+        camera.far = 1000f;
         sceneManager.setCamera(camera);
         camera.position.set(0, 5f, 4f);
 
         // Gdx.input.setCursorCatched(true);
         // Gdx.input.setInputProcessor(this);
-
 
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(stage);
@@ -188,8 +182,6 @@ public class MyGame extends ApplicationAdapter
         processInput(deltaTime);
         updateCamera();
 
-
-        
         // render
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         sceneManager.update(deltaTime);
@@ -200,11 +192,14 @@ public class MyGame extends ApplicationAdapter
     }
 
     private void processInput(float deltaTime) {
-        //here we handle all the user input
-        //usually it helps to process all the input in one place,
-        //so avoid things like "Gdx.input.getDeltaX()" outside this function!
-        //that way when you need to adjust anything with the control logic
-        //you know you'll always find all the input handling here
+        // here we handle all the user input
+        // usually it helps to process all the input in one place,
+        // so avoid things like "Gdx.input.getDeltaX()" outside this function!
+        // that way when you need to adjust anything with the control logic
+        // you know you'll always find all the input handling here
+
+        deltaX = Gdx.input.getDeltaX();
+        rotateCamera(-deltaX);
 
         // Update the player transform
         playerTransform.set(playerScene.modelInstance.transform);
@@ -233,7 +228,7 @@ public class MyGame extends ApplicationAdapter
 
         if (touchpad.getTouchpad().isTouched()) {
 
-            //here we handle the touchpad
+            // here we handle the touchpad
             inTouchpad = true;
             sprinting = false;
 
@@ -241,52 +236,53 @@ public class MyGame extends ApplicationAdapter
             touchpadY = touchpad.getTouchpad().getKnobPercentY();
 
             if ((touchpadX != 0) || (touchpadY != 0)) {
-                //Erkka: atan2() function returns the angle in radians, so we convert it to degrees by *180/pi
+                // Erkka: atan2() function returns the angle in radians, so we convert it to degrees
+                // by *180/pi
                 touchpadAngle = (float) (atan2(touchpadY, touchpadX) * 180.0d / Math.PI);
 
-                //we now have the absolute toucpadAngle, ie. 0 is always to the east, 90 always to the right
-                //but the camera might be rotated, and we probably want knob to the right moving the character to the right of the screen, not to the absolute east
-                //luckily, we have the camera facing in angleAroundPlayer
-                //but angleAroundPlayer has 0 to north, and seems to be clock-wise
-                //so we need to do some computation to make angleAroundPlayer compatible
-                //with the angle we calculated for the knob
+                // we now have the absolute toucpadAngle, ie. 0 is always to the east, 90 always to
+                // the right
+                // but the camera might be rotated, and we probably want knob to the right moving
+                // the character to the right of the screen, not to the absolute east
+                // luckily, we have the camera facing in angleAroundPlayer
+                // but angleAroundPlayer has 0 to north, and seems to be clock-wise
+                // so we need to do some computation to make angleAroundPlayer compatible
+                // with the angle we calculated for the knob
 
-                float convertedAngle = (360-(angleAroundPlayer-90));
-                while (convertedAngle < 0)
-                    convertedAngle +=360;
+                float convertedAngle = (360 - (angleAroundPlayer - 90));
+                while (convertedAngle < 0) convertedAngle += 360;
 
-                touchpadAngle-=convertedAngle;
+                touchpadAngle -= convertedAngle;
 
                 rotatePlayerInGivenDirection(null, touchpadAngle);
                 moveTranslation.z += speed * deltaTime;
             }
 
-        }
-        else inTouchpad = false;
+        } else inTouchpad = false;
 
         if (!inTouchpad) {
 
-           
+            // Erkka: here we read the touch dragged horizontally, outside the touchpad
 
-            //Erkka: here we read the touch dragged horizontally, outside the touchpad
-            deltaX = Gdx.input.getDeltaX();
             if (deltaX != 0) {
                 if (sprinting) {
                     rotatePlayer(-deltaX);
                 }
 
-                //if in sprint mode, we rotate both the player and the camera
-                //if not in sprint mode, we rotate only the camera
-                rotateCamera(-deltaX);
+                // if in sprint mode, we rotate both the player and the camera
+                // if not in sprint mode, we rotate only the camera
 
             }
+        }
+
+        if (isSprintBtnJustClicked) {
+            rotatePlayerInCamDirection(null);
+            isSprintBtnJustClicked = false;
         }
 
         if (sprinting) {
             moveTranslation.z += 5f * deltaTime;
         }
-
-        
 
         // Apply the move translation to the transform
         playerTransform.translate(moveTranslation);
@@ -328,7 +324,6 @@ public class MyGame extends ApplicationAdapter
         float vertDistance = calculateVerticalDistance(distanceFromPlayer);
 
         calculatePitch();
-     //    calculateAngleAroundPlayer();
         calculateCameraPosition(currentPosition, -horDistance, vertDistance);
 
         camera.up.set(Vector3.Y);
@@ -346,75 +341,65 @@ public class MyGame extends ApplicationAdapter
         camera.position.y = currentPosition.y + vertDistance;
     }
 
-//    private void calculateAngleAroundPlayer() {
-//        float angleChange = Gdx.input.getDeltaX() * Settings.CAMERA_ANGLE_AROUND_PLAYER_FACTOR;
-//
-//            angleAroundPlayer -= angleChange;
-//        
-//        
-//        if(sprinting)
-//        playerScene.modelInstance.transform.rotate(Vector3.Y, -angleChange);
-//    }
-
-    public void rotateCamera(float angle)
-    {
+    public void rotateCamera(float angle) {
         angleAroundPlayer += angle;
-        if (angleAroundPlayer >= 360) angleAroundPlayer-=360;
-        if (angleAroundPlayer < 0) angleAroundPlayer +=360;
+        if (angleAroundPlayer >= 360) angleAroundPlayer -= 360;
+        if (angleAroundPlayer < 0) angleAroundPlayer += 360;
     }
 
-    public void rotatePlayer(float angle)
-    {
+    public void rotatePlayer(float angle) {
         playerTransform.rotate(Vector3.Y, angle);
         angleBehindPlayer += angle;
-        if (angleBehindPlayer >= 360) angleBehindPlayer-=360;
-        if (angleBehindPlayer < 0) angleBehindPlayer +=360;
+        if (angleBehindPlayer >= 360) angleBehindPlayer -= 360;
+        if (angleBehindPlayer < 0) angleBehindPlayer += 360;
     }
-    
-    
-    
+
     public void rotatePlayerInCamDirection(Float rapidRotationMax) {
 
-        //playerTransform.rotate(Vector3.Y , camera.direction);
-        //Erkka: this is what you had. I try to simplify the problem:
-        //suppose camera.direction is 270 degrees
-        //playerTransfrom.rotate would then turn the player 270 degrees
-        //and the next time this is run, it would again turn the player 270 degrees
-        //so, playerTransfrom.rotate is not "rotate to given angle" but "rotate by given angle"
-        //and then it gets more complicated, since I think camera.direction has the angles for X,Y and Z axises
+        // playerTransform.rotate(Vector3.Y , camera.direction);
+        // Erkka: this is what you had. I try to simplify the problem:
+        // suppose camera.direction is 270 degrees
+        // playerTransfrom.rotate would then turn the player 270 degrees
+        // and the next time this is run, it would again turn the player 270 degrees
+        // so, playerTransfrom.rotate is not "rotate to given angle" but "rotate by given angle"
+        // and then it gets more complicated, since I think camera.direction has the angles for X,Y
+        // and Z axises
 
+        // we get the difference between camera angle and the angle behind the player
+        float diff = angleAroundPlayer - angleBehindPlayer;
+        if (diff >= 360) diff -= 360;
+        if (diff < 0) diff += 360;
 
-        //we get the difference between camera angle and the angle behind the player
-        float diff = angleAroundPlayer-angleBehindPlayer;
-        if (diff >= 360) diff-=360;
-        if (diff < 0) diff+=360;
-
-        //if rapidRotationMax is null, we will turn the player all the way so that the player will immediately face the camera direction
-        //but if we need an animation-style slow turn towards the camera, then we'd need to set the rapidRotationMax
+        // if rapidRotationMax is null, we will turn the player all the way so that the player will
+        // immediately face the camera direction
+        // but if we need an animation-style slow turn towards the camera, then we'd need to set the
+        // rapidRotationMax
         if (rapidRotationMax != null) {
             if (diff > rapidRotationMax) diff = rapidRotationMax;
             if (diff < -rapidRotationMax) diff = -rapidRotationMax;
         }
 
-        //and then we turn
+        // and then we turn
         rotatePlayer(diff);
     }
 
     public void rotatePlayerInGivenDirection(Float rapidRotationMax, float towards) {
 
-        //we get the difference between the desired angle and the angle behind the player
-        float diff = towards-angleBehindPlayer;
-        if (diff >= 360) diff-=360;
-        if (diff < 0) diff+=360;
+        // we get the difference between the desired angle and the angle behind the player
+        float diff = towards - angleBehindPlayer;
+        if (diff >= 360) diff -= 360;
+        if (diff < 0) diff += 360;
 
-        //if rapidRotationMax is null, we will turn the player all the way so that the player will immediately face the camera direction
-        //but if we need an animation-style slow turn towards the camera, then we'd need to set the rapidRotationMax
+        // if rapidRotationMax is null, we will turn the player all the way so that the player will
+        // immediately face the camera direction
+        // but if we need an animation-style slow turn towards the camera, then we'd need to set the
+        // rapidRotationMax
         if (rapidRotationMax != null) {
             if (diff > rapidRotationMax) diff = rapidRotationMax;
             if (diff < -rapidRotationMax) diff = -rapidRotationMax;
         }
 
-        //and then we turn
+        // and then we turn
         rotatePlayer(diff);
     }
 
