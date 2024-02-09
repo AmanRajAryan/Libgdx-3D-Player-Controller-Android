@@ -60,7 +60,6 @@ public class MyGame extends ApplicationAdapter
     boolean sprinting = false;
 
     // Camera
-    private CameraMode cameraMode = CameraMode.FREE_LOOK;
     private float camPitch = Settings.CAMERA_START_PITCH;
     private float distanceFromPlayer = 20f;
     private float angleAroundPlayer = 0f;
@@ -305,17 +304,6 @@ public class MyGame extends ApplicationAdapter
             moveTranslation.z += 5f * deltaTime;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
-            switch (cameraMode) {
-                case FREE_LOOK:
-                    cameraMode = CameraMode.BEHIND_PLAYER;
-                    angleAroundPlayer = angleBehindPlayer;
-                    break;
-                case BEHIND_PLAYER:
-                    cameraMode = CameraMode.FREE_LOOK;
-                    break;
-            }
-        }
 
         // Apply the move translation to the transform
         playerTransform.translate(moveTranslation);
