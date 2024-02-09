@@ -1,7 +1,0 @@
-aman.three.android-pngs-0 /data/data/com.itsaky.androidide/files/home/mygame/android/build/generated/res/pngs/debug
-aman.three.android-resValues-1 /data/data/com.itsaky.androidide/files/home/mygame/android/build/generated/res/resValues/debug
-aman.three.android-packageDebugResources-2 /data/data/com.itsaky.androidide/files/home/mygame/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir
-aman.three.android-packageDebugResources-3 /data/data/com.itsaky.androidide/files/home/mygame/android/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
-aman.three.android-merged_res-4 /data/data/com.itsaky.androidide/files/home/mygame/android/build/intermediates/merged_res/debug
-aman.three.android-android-5 /data/data/com.itsaky.androidide/files/home/mygame/android/res
-aman.three.android-debug-6 /data/data/com.itsaky.androidide/files/home/mygame/android/src/debug/res

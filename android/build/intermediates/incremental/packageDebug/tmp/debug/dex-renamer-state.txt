@@ -1,4 +1,0 @@
-#Thu Feb 08 15:52:09 GMT 2024
-base.0=/data/data/com.itsaky.androidide/files/home/mygame/android/build/intermediates/dex/debug/mergeDexDebug/classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
