@@ -34,6 +34,10 @@ public class PlayerController {
     float touchpadY;
     float touchpadAngle; // Erkka: another helper function to store the touchpad angle. 0 for
 
+    float previousGetX;
+    float previousGetY;
+    float limit = 30;
+
     public void createContoller(MyGame game) {
         this.mainGameClass = game;
 
@@ -44,14 +48,30 @@ public class PlayerController {
 
     public void processInput(float deltaTime) {
 
-        // here we handle all the user input
-        // usually it helps to process all the input in one place,
-        // so avoid things like "Gdx.input.getDeltaX()" outside this function!
-        // that way when you need to adjust anything with the control logic
-        // you know you'll always find all the input handling here
-
         deltaX = Gdx.input.getDeltaX();
-        rotateCamera(-deltaX);
+        mainGameClass.secondDebugger.setText("Gdx.input.getX(0) is : " + Gdx.input.getX(0));
+        mainGameClass.debugger.setText("Gdx.input.getX(1) is : " + Gdx.input.getX(1));
+        mainGameClass.deltaXDebugger.setText("deltaX is : " + deltaX);
+
+        if (Gdx.input.getX() > Gdx.graphics.getWidth() / 2) {
+
+            rotateCamera(-deltaX);
+        }
+        if (Gdx.input.getX() == previousGetX) {
+            limit = 1;
+        }
+
+        if (Gdx.input.getX(1) > Gdx.graphics.getWidth() / 2) {
+
+            float getXCalculated = previousGetX - Gdx.input.getX(1);
+
+            mainGameClass.getXCalculated.setText(
+                    "getXCalculted : " + String.valueOf(getXCalculated));
+            previousGetX = Gdx.input.getX(1);
+            if (getXCalculated > -limit && getXCalculated < limit) rotateCamera(getXCalculated);
+
+            limit = 30;
+        }
 
         // Update the player transform
         playerTransform.set(playerScene.modelInstance.transform);
@@ -83,12 +103,13 @@ public class PlayerController {
             // here we handle the touchpad
             inTouchpad = true;
             mainGameClass.sprinting = false;
-            mainGameClass.isWalking = true;
 
             touchpadX = touchpad.getTouchpad().getKnobPercentX();
             touchpadY = touchpad.getTouchpad().getKnobPercentY();
 
             if ((touchpadX != 0) || (touchpadY != 0)) {
+
+                mainGameClass.isWalking = true;
                 // Erkka: atan2() function returns the angle in radians, so we convert it to degrees
                 // by *180/pi
                 touchpadAngle = (float) (atan2(touchpadY, touchpadX) * 180.0d / Math.PI);
@@ -238,8 +259,21 @@ public class PlayerController {
     }
 
     private void calculatePitch() {
-        float pitchChange = -Gdx.input.getDeltaY() * Settings.CAMERA_PITCH_FACTOR;
-        camPitch -= pitchChange;
+        if (Gdx.input.getX() > Gdx.graphics.getWidth() / 2) {
+            float pitchChange = -Gdx.input.getDeltaY() * Settings.CAMERA_PITCH_FACTOR;
+            camPitch -= pitchChange;
+        }
+
+        if (Gdx.input.getX(1) > Gdx.graphics.getWidth() / 2) {
+
+            float getYCalculated = previousGetY - Gdx.input.getY(1);
+            limit = 20;
+            previousGetY = Gdx.input.getY(1);
+            float pitchChange = -Gdx.input.getDeltaY() * Settings.CAMERA_PITCH_FACTOR;
+
+            if (getYCalculated > -limit + 10 && getYCalculated < limit - 10)
+                camPitch -= getYCalculated;
+        }
 
         if (camPitch < Settings.CAMERA_MIN_PITCH) camPitch = Settings.CAMERA_MIN_PITCH;
         else if (camPitch > Settings.CAMERA_MAX_PITCH) camPitch = Settings.CAMERA_MAX_PITCH;

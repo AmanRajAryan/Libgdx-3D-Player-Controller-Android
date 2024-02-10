@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -53,7 +55,7 @@ public class MyGame extends ApplicationAdapter
     boolean sprinting = false;
     boolean isWalking = false;
 
-    // Camera
+   
 
     // touchpad
     Stage stage;
@@ -61,8 +63,11 @@ public class MyGame extends ApplicationAdapter
     Batch batch;
     PlayerController playerController;
 
-    // east, 90 for the north, so it is counter-clockwise
-    
+    //debugging
+    Label debugger;
+    Label secondDebugger;
+    Label deltaXDebugger;
+    Label getXCalculated;
     
     
     
@@ -73,6 +78,31 @@ public class MyGame extends ApplicationAdapter
         // Create Sprite and a Stage
         batch = new SpriteBatch();
         stage = new Stage(new ScreenViewport(), batch);
+        
+        BitmapFont font = new BitmapFont();
+        
+        Label.LabelStyle debuggerStyle = new Label.LabelStyle(font , Color.RED);
+        
+        debugger = new Label("debuggerText", debuggerStyle);
+        debugger.setFontScale(2);
+        debugger.setPosition(20 , 650);
+        stage.addActor(debugger);
+        
+        secondDebugger = new Label("debuggerText", debuggerStyle);
+        secondDebugger.setFontScale(2);
+        secondDebugger.setPosition(20 , 600);
+        stage.addActor(secondDebugger);
+        
+        deltaXDebugger = new Label("debuggerText", debuggerStyle);
+        deltaXDebugger.setFontScale(2);
+        deltaXDebugger.setPosition(20 , 550);
+        stage.addActor(deltaXDebugger);
+        
+        getXCalculated = new Label("getXCalculated will be here", debuggerStyle);
+        getXCalculated.setFontScale(2);
+        getXCalculated.setPosition(20 , 500);
+        stage.addActor(getXCalculated);
+        
 
         // sprint button
         Texture sprintBtnTexture = new Texture(Gdx.files.internal("sprint.png"));
@@ -81,7 +111,8 @@ public class MyGame extends ApplicationAdapter
         ImageButton sprintBtn = new ImageButton(sprintBtnStyle);
         sprintBtn.setWidth(150f);
         sprintBtn.setHeight(150f);
-        sprintBtn.setPosition(100f, 350f);
+        sprintBtn.setPosition(100f, 300f);
+        
 
         sprintBtn.addListener(
                 new InputListener() {
@@ -103,6 +134,7 @@ public class MyGame extends ApplicationAdapter
                     }
                 });
         stage.addActor(sprintBtn);
+        
 
         // create touchPad
         touchpad = new TouchPad(stage, sprintBtn);
