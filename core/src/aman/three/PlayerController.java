@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import net.mgsx.gltf.scene3d.scene.Scene;
 
-public class PlayerController implements InputProcessor {
+public class PlayerController {
 
     MyGame mainGameClass;
     float speed = 5f;
@@ -26,7 +26,7 @@ public class PlayerController implements InputProcessor {
     private float angleBehindPlayer = 0f;
 
     boolean inTouchpad; // Erkka: if the touch is in the touchpad, false otherwise
-    PerspectiveCamera camera ;
+    PerspectiveCamera camera;
     Scene playerScene;
     TouchPad touchpad;
     int deltaX; // Erkka: a helper variable to store how much the touch has been dragged sideways
@@ -34,23 +34,15 @@ public class PlayerController implements InputProcessor {
     float touchpadY;
     float touchpadAngle; // Erkka: another helper function to store the touchpad angle. 0 for
 
-    
     public void createContoller(MyGame game) {
         this.mainGameClass = game;
-        
-    camera = mainGameClass.camera;
+
+        camera = mainGameClass.camera;
         playerScene = mainGameClass.playerScene;
         touchpad = mainGameClass.touchpad;
     }
-    
-    
-    
-    
-    
-    
-    public void processInput(float deltaTime) {
 
-        
+    public void processInput(float deltaTime) {
 
         // here we handle all the user input
         // usually it helps to process all the input in one place,
@@ -259,50 +251,5 @@ public class PlayerController implements InputProcessor {
 
     private float calculateHorizontalDistance(float distanceFromPlayer) {
         return (float) (distanceFromPlayer * Math.cos(Math.toRadians(camPitch)));
-    }
-
-    @Override
-    public boolean keyDown(int arg0) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char arg0) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int arg0) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int arg0, int arg1) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(float arg0, float arg1) {
-        return false;
-    }
-
-    @Override
-    public boolean touchCancelled(int arg0, int arg1, int arg2, int arg3) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int arg0, int arg1, int arg2, int arg3) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int arg0, int arg1, int arg2) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int arg0, int arg1, int arg2, int arg3) {
-        return false;
     }
 }

@@ -25,16 +25,12 @@ public class TouchPad {
     private static Skin touchpadSkin;
     private static Drawable touchBackground;
     private static Drawable touchKnob;
- 
-    //pass Stage to TouchPad
-    
-    
-    
-    
-    
-    public TouchPad(Stage stage , ImageButton sprintBtn) {
+
+    // pass Stage to TouchPad
+
+    public TouchPad(Stage stage, ImageButton sprintBtn) {
         this.stage = stage;
-        
+
         touchpadSkin = new Skin();
         touchpadSkin.add("touchBackground", new Texture("JoystickSplitted.png"));
         touchpadSkin.add("touchKnob", new Texture("SmallHandleFilledGrey.png"));
@@ -62,7 +58,7 @@ public class TouchPad {
                     public boolean touchDown(
                             InputEvent event, float x, float y, int pointer, int button) {
                         boolean isScreenTouched = false;
-                        if (event.getTarget() != touchpad && event.getTarget() != sprintBtn ) {
+                        if (event.getTarget() != touchpad && event.getTarget() != sprintBtn) {
 
                             if (x < Gdx.graphics.getWidth() / 2) {
 
@@ -117,10 +113,7 @@ public class TouchPad {
     // stage.act(Gdx.graphics.getDeltaTime());
     // stage.draw();
 
-    public Touchpad getTouchpad(){
+    public Touchpad getTouchpad() {
         return touchpad;
     }
-    
-    
-    
 }
