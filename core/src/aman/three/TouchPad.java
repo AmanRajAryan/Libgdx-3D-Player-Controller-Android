@@ -26,6 +26,8 @@ public class TouchPad {
     private static Drawable touchBackground;
     private static Drawable touchKnob;
 
+    int touchPointerIndex = -1;
+
     // pass Stage to TouchPad
 
     public TouchPad(Stage stage) {
@@ -58,21 +60,25 @@ public class TouchPad {
                     public boolean touchDown(
                             InputEvent event, float x, float y, int pointer, int button) {
                         boolean isScreenTouched = false;
-                        if (event.getTarget() != touchpad) {
+                        touchPointerIndex = pointer;
+                        if (touchPointerIndex == pointer) {
 
-                            if (x < Gdx.graphics.getWidth() / 2) {
+                            if (event.getTarget() != touchpad) {
 
-                                b.set(
-                                        touchpad.getX(),
-                                        touchpad.getY(),
-                                        touchpad.getWidth(),
-                                        touchpad.getHeight());
-                                b.setCenter(x, y);
-                                touchpad.setBounds(b.x, b.y, b.width, b.height);
+                                if (x < Gdx.graphics.getWidth() / 2) {
 
-                                // Let the touchpad know to start tracking touch
-                                touchpad.fire(event);
-                                isScreenTouched = true;
+                                    b.set(
+                                            touchpad.getX(),
+                                            touchpad.getY(),
+                                            touchpad.getWidth(),
+                                            touchpad.getHeight());
+                                    b.setCenter(x, y);
+                                    touchpad.setBounds(b.x, b.y, b.width, b.height);
+
+                                    // Let the touchpad know to start tracking touch
+                                    touchpad.fire(event);
+                                    isScreenTouched = true;
+                                }
                             }
                         }
                         return isScreenTouched;
@@ -80,19 +86,27 @@ public class TouchPad {
 
                     @Override
                     public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                        touchpad.stageToLocalCoordinates(p.set(x, y));
-                        if (touchpad.hit(p.x, p.y, true) == null) {
-                            // If we moved outside of the touchpad, have it follow our touch
-                            // position;
-                            // but we want to keep the direction of the knob, so shift to the edge
-                            // of the
-                            // touchpad's radius with a small amount of smoothing, so it looks nice.
-                            p.set(-touchpad.getKnobPercentX(), -touchpad.getKnobPercentY())
-                                    .nor()
-                                    .scl(Math.min(touchpad.getWidth(), touchpad.getHeight()) * 0.5f)
-                                    .add(x, y);
-                            touchpad.addAction(
-                                    Actions.moveToAligned(p.x, p.y, Align.center, 0.15f));
+                            
+                        if (touchPointerIndex == pointer) {
+
+                            touchpad.stageToLocalCoordinates(p.set(x, y));
+                            if (touchpad.hit(p.x, p.y, true) == null) {
+                                // If we moved outside of the touchpad, have it follow our touch
+                                // position;
+                                // but we want to keep the direction of the knob, so shift to the
+                                // edge
+                                // of the
+                                // touchpad's radius with a small amount of smoothing, so it looks
+                                // nice.
+                                p.set(-touchpad.getKnobPercentX(), -touchpad.getKnobPercentY())
+                                        .nor()
+                                        .scl(
+                                                Math.min(touchpad.getWidth(), touchpad.getHeight())
+                                                        * 0.5f)
+                                        .add(x, y);
+                                touchpad.addAction(
+                                        Actions.moveToAligned(p.x, p.y, Align.center, 0.15f));
+                            }
                         }
                     }
 
@@ -100,11 +114,11 @@ public class TouchPad {
                     public void touchUp(
                             InputEvent event, float x, float y, int pointer, int button) {
                         // Put the touchpad back to its original position
+                        touchPointerIndex = -1;
                         touchpad.clearActions();
                         touchpad.addAction(Actions.moveTo(110, 110, 0.15f));
                     }
                 });
-        
     }
 
     // refresh stage in render function of main activity
