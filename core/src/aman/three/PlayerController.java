@@ -21,7 +21,7 @@ public class PlayerController {
     private final Vector3 currentPosition = new Vector3();
 
     private float camPitch = Settings.CAMERA_START_PITCH;
-    float vectorToCalculateCameraRotation;
+    float floatToCalculateCameraRotation;
     public float distanceFromPlayer = 20f;
     private float angleAroundPlayer = 0f;
     private float angleBehindPlayer = 0f;
@@ -175,7 +175,7 @@ public class PlayerController {
         calculatePitch();
         calculateCameraPosition(currentPosition, -horDistance, vertDistance);
         camera.up.set(Vector3.Y);
-        camera.lookAt(currentPosition.x , currentPosition.y + vectorToCalculateCameraRotation * 10, currentPosition.z);
+        camera.lookAt(currentPosition.x , currentPosition.y + floatToCalculateCameraRotation, currentPosition.z);
         camera.update();
     }
 
@@ -256,6 +256,13 @@ public class PlayerController {
         if (Gdx.input.getX() > Gdx.graphics.getWidth() / 2) {
              pitchChange = -Gdx.input.getDeltaY() * Settings.CAMERA_PITCH_FACTOR;
             camPitch -= pitchChange;
+            
+            if(Gdx.input.getDeltaY() > 0) {
+            	if(floatToCalculateCameraRotation > 0) {
+            		floatToCalculateCameraRotation += pitchChange;
+                    distanceFromPlayer -= pitchChange * 0.5;
+            	}
+            }
         }
 
         if (Gdx.input.getX(1) > Gdx.graphics.getWidth() / 2) {
@@ -266,8 +273,8 @@ public class PlayerController {
 
         if (camPitch < Settings.CAMERA_MIN_PITCH) {
             camPitch = Settings.CAMERA_MIN_PITCH;
-             vectorToCalculateCameraRotation += pitchChange;
-            
+             floatToCalculateCameraRotation += pitchChange;
+             distanceFromPlayer -= pitchChange * 0.5;
             
         } else if (camPitch > Settings.CAMERA_MAX_PITCH) camPitch = Settings.CAMERA_MAX_PITCH;
     }
