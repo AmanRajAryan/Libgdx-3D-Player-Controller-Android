@@ -58,24 +58,24 @@ public class TouchPad {
                     public boolean touchDown(
                             InputEvent event, float x, float y, int pointer, int button) {
                         boolean isScreenTouched = false;
-                    if(!touchpad.isTouched()){
-                        if (event.getTarget() != touchpad) {
+                        if (!touchpad.isTouched()) {
+                            if (event.getTarget() != touchpad) {
 
-                            if (x < Gdx.graphics.getWidth() / 2) {
+                                if (x < Gdx.graphics.getWidth() / 2) {
 
-                                b.set(
-                                        touchpad.getX(),
-                                        touchpad.getY(),
-                                        touchpad.getWidth(),
-                                        touchpad.getHeight());
-                                b.setCenter(x, y);
-                                touchpad.setBounds(b.x, b.y, b.width, b.height);
+                                    b.set(
+                                            touchpad.getX(),
+                                            touchpad.getY(),
+                                            touchpad.getWidth(),
+                                            touchpad.getHeight());
+                                    b.setCenter(x, y);
+                                    touchpad.setBounds(b.x, b.y, b.width, b.height);
 
-                                // Let the touchpad know to start tracking touch
-                                touchpad.fire(event);
-                                isScreenTouched = true;
+                                    // Let the touchpad know to start tracking touch
+                                    touchpad.fire(event);
+                                    isScreenTouched = true;
+                                }
                             }
-                        }
                         }
                         return isScreenTouched;
                     }
@@ -106,7 +106,6 @@ public class TouchPad {
                         touchpad.addAction(Actions.moveTo(110, 110, 0.15f));
                     }
                 });
-        
     }
 
     // refresh stage in render function of main activity
