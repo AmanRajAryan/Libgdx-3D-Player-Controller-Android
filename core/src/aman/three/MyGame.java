@@ -1,5 +1,7 @@
 package aman.three;
 
+import aman.three.HUD;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -15,12 +17,8 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.shapebuilders.BoxShapeBuilder;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import net.mgsx.gltf.loaders.gltf.GLTFLoader;
@@ -63,81 +61,31 @@ public class MyGame extends ApplicationAdapter
     Batch batch;
     PlayerController playerController;
 
-    //debugging
-    Label debugger;
-    Label secondDebugger;
-    Label deltaXDebugger;
-    Label getXCalculated;
+    
     
     
     
 
     @Override
     public void create() {
-        playerController = new PlayerController();
         // Create Sprite and a Stage
         batch = new SpriteBatch();
         stage = new Stage(new ScreenViewport(), batch);
         
-        BitmapFont font = new BitmapFont();
         
-        Label.LabelStyle debuggerStyle = new Label.LabelStyle(font , Color.RED);
         
-        debugger = new Label("debuggerText", debuggerStyle);
-        debugger.setFontScale(2);
-        debugger.setPosition(20 , 650);
-        stage.addActor(debugger);
+        playerController = new PlayerController();
         
-        secondDebugger = new Label("debuggerText", debuggerStyle);
-        secondDebugger.setFontScale(2);
-        secondDebugger.setPosition(20 , 600);
-        stage.addActor(secondDebugger);
         
-        deltaXDebugger = new Label("debuggerText", debuggerStyle);
-        deltaXDebugger.setFontScale(2);
-        deltaXDebugger.setPosition(20 , 550);
-        stage.addActor(deltaXDebugger);
+        HUD hud = new HUD();
+        hud.initializeHUD(this , stage);
         
-        getXCalculated = new Label("getXCalculated will be here", debuggerStyle);
-        getXCalculated.setFontScale(2);
-        getXCalculated.setPosition(20 , 500);
-        stage.addActor(getXCalculated);
+        
+        
+        
         
 
-        // sprint button
-        Texture sprintBtnTexture = new Texture(Gdx.files.internal("sprint.png"));
-        ImageButton.ImageButtonStyle sprintBtnStyle = new ImageButton.ImageButtonStyle();
-        sprintBtnStyle.up = new TextureRegionDrawable(sprintBtnTexture);
-        ImageButton sprintBtn = new ImageButton(sprintBtnStyle);
-        sprintBtn.setWidth(150f);
-        sprintBtn.setHeight(150f);
-        sprintBtn.setPosition(100f, 300f);
         
-
-        sprintBtn.addListener(
-                new InputListener() {
-                    @Override
-                    public void touchUp(
-                            InputEvent event, float x, float y, int pointer, int button) {}
-
-                    @Override
-                    public boolean touchDown(
-                            InputEvent event, float x, float y, int pointer, int button) {
-                        if (sprinting) {
-                            sprinting = false;
-                        } else {
-                            isSprintBtnJustClicked = true;
-                            sprinting = true;
-                        }
-
-                        return true;
-                    }
-                });
-        stage.addActor(sprintBtn);
-        
-
-        // create touchPad
-        touchpad = new TouchPad(stage, sprintBtn);
 
         // create scene
         sceneAsset = new GLTFLoader().load(Gdx.files.internal("models/Worker_Male.gltf"));

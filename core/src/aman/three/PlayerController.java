@@ -1,5 +1,6 @@
 package aman.three;
 
+
 import static java.lang.Math.atan2;
 
 import com.badlogic.gdx.Gdx;
@@ -36,7 +37,8 @@ public class PlayerController {
 
     float previousGetX;
     float previousGetY;
-    float limit = 30;
+    
+    
 
     public void createContoller(MyGame game) {
         this.mainGameClass = game;
@@ -49,28 +51,20 @@ public class PlayerController {
     public void processInput(float deltaTime) {
 
         deltaX = Gdx.input.getDeltaX();
-        mainGameClass.secondDebugger.setText("Gdx.input.getX(0) is : " + Gdx.input.getX(0));
-        mainGameClass.debugger.setText("Gdx.input.getX(1) is : " + Gdx.input.getX(1));
-        mainGameClass.deltaXDebugger.setText("deltaX is : " + deltaX);
-
+        
+        
+        
         if (Gdx.input.getX() > Gdx.graphics.getWidth() / 2) {
 
             rotateCamera(-deltaX);
         }
-        if (Gdx.input.getX() == previousGetX) {
-            limit = 1;
-        }
+       
 
         if (Gdx.input.getX(1) > Gdx.graphics.getWidth() / 2) {
 
-            float getXCalculated = previousGetX - Gdx.input.getX(1);
+             rotateCamera(-Gdx.input.getDeltaX(1));
 
-            mainGameClass.getXCalculated.setText(
-                    "getXCalculted : " + String.valueOf(getXCalculated));
-            previousGetX = Gdx.input.getX(1);
-            if (getXCalculated > -limit && getXCalculated < limit) rotateCamera(getXCalculated);
-
-            limit = 30;
+            
         }
 
         // Update the player transform
@@ -176,7 +170,7 @@ public class PlayerController {
 
     public void updateCamera() {
         float horDistance = calculateHorizontalDistance(distanceFromPlayer);
-        float vertDistance = calculateVerticalDistance(distanceFromPlayer + 15);
+        float vertDistance = calculateVerticalDistance(distanceFromPlayer + 20);
 
         calculatePitch();
         calculateCameraPosition(currentPosition, -horDistance, vertDistance);
@@ -266,13 +260,8 @@ public class PlayerController {
 
         if (Gdx.input.getX(1) > Gdx.graphics.getWidth() / 2) {
 
-            float getYCalculated = previousGetY - Gdx.input.getY(1);
-            limit = 20;
-            previousGetY = Gdx.input.getY(1);
-            float pitchChange = -Gdx.input.getDeltaY() * Settings.CAMERA_PITCH_FACTOR;
-
-            if (getYCalculated > -limit + 10 && getYCalculated < limit - 10)
-                camPitch -= getYCalculated;
+            float pitchChange = -Gdx.input.getDeltaY(1) * Settings.CAMERA_PITCH_FACTOR;
+            camPitch -= pitchChange;
         }
 
         if (camPitch < Settings.CAMERA_MIN_PITCH) camPitch = Settings.CAMERA_MIN_PITCH;

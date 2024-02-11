@@ -28,7 +28,7 @@ public class TouchPad {
 
     // pass Stage to TouchPad
 
-    public TouchPad(Stage stage, ImageButton sprintBtn) {
+    public TouchPad(Stage stage) {
         this.stage = stage;
 
         touchpadSkin = new Skin();
@@ -58,7 +58,7 @@ public class TouchPad {
                     public boolean touchDown(
                             InputEvent event, float x, float y, int pointer, int button) {
                         boolean isScreenTouched = false;
-                        if (event.getTarget() != touchpad && event.getTarget() != sprintBtn) {
+                        if (event.getTarget() != touchpad) {
 
                             if (x < Gdx.graphics.getWidth() / 2) {
 
@@ -104,7 +104,7 @@ public class TouchPad {
                         touchpad.addAction(Actions.moveTo(110, 110, 0.15f));
                     }
                 });
-        stage.addActor(touchpad);
+        
     }
 
     // refresh stage in render function of main activity
