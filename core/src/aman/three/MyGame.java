@@ -34,8 +34,7 @@ import net.mgsx.gltf.scene3d.shaders.PBRShaderConfig;
 import net.mgsx.gltf.scene3d.shaders.PBRShaderProvider;
 import net.mgsx.gltf.scene3d.utils.IBLBuilder;
 
-public class MyGame extends ApplicationAdapter
-        implements AnimationController.AnimationListener {
+public class MyGame extends ApplicationAdapter implements AnimationController.AnimationListener {
     private SceneManager sceneManager;
     private SceneAsset sceneAsset;
     public Scene playerScene;
@@ -53,53 +52,30 @@ public class MyGame extends ApplicationAdapter
     boolean sprinting = false;
     boolean isWalking = false;
 
-   //player controller
+    // player controller
     PlayerController playerController;
-    
-    //Stage & batch
+
+    // Stage & batch
     Batch batch;
     Stage stage;
-    
-    //HUD
-    //HUD
+
+    // HUD
+    // HUD
     HUD hud;
-    
-    
-    
-    
-    
-    
 
     // touchpad
     public TouchPad touchpad;
-    
-    
-
-    
-    
-    
-    
 
     @Override
     public void create() {
         // Create Sprite and a Stage
         batch = new SpriteBatch();
         stage = new Stage(new ScreenViewport(), batch);
-        
-        
-        
-        playerController = new PlayerController();
-        
-        
-        hud = new HUD();
-        hud.initializeHUD(this , stage);
-        
-        
-        
-        
-        
 
-        
+        playerController = new PlayerController();
+
+        hud = new HUD();
+        hud.initializeHUD(this, stage);
 
         // create scene
         sceneAsset = new GLTFLoader().load(Gdx.files.internal("models/Worker_Male.gltf"));
@@ -229,7 +205,6 @@ public class MyGame extends ApplicationAdapter
         specularCubemap.dispose();
         brdfLUT.dispose();
         skybox.dispose();
-        
     }
 
     @Override
@@ -237,6 +212,4 @@ public class MyGame extends ApplicationAdapter
 
     @Override
     public void onLoop(AnimationController.AnimationDesc animation) {}
-
-    
 }

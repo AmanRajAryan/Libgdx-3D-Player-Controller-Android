@@ -57,9 +57,7 @@ public class PlayerController {
                 rotateCamera(-Gdx.input.getDeltaX(1));
             }
             
-//            if(Gdx.input.getX(1)!= 0) {
-//            	rotateCamera(-Gdx.input.getDeltaX(1));
-//            }
+
             
             if(cameraCanBeRotatedNow) {
             	rotateCamera(-deltaX);
