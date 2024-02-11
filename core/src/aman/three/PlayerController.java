@@ -1,6 +1,5 @@
 package aman.three;
 
-
 import static java.lang.Math.atan2;
 
 import com.badlogic.gdx.Gdx;
@@ -37,8 +36,7 @@ public class PlayerController {
 
     float previousGetX;
     float previousGetY;
-    
-    
+    boolean cameraCanBeRotatedNow = false;
 
     public void createContoller(MyGame game) {
         this.mainGameClass = game;
@@ -51,20 +49,24 @@ public class PlayerController {
     public void processInput(float deltaTime) {
 
         deltaX = Gdx.input.getDeltaX();
-        
-        
-        
-        if (Gdx.input.getX() > Gdx.graphics.getWidth() / 2) {
 
-            rotateCamera(-deltaX);
-        }
-       
-
-        if (Gdx.input.getX(1) > Gdx.graphics.getWidth() / 2) {
-
-             rotateCamera(-Gdx.input.getDeltaX(1));
-
+        if (!mainGameClass.sprinting) {
+            if (Gdx.input.getX() > Gdx.graphics.getWidth() / 2) {
+                cameraCanBeRotatedNow = true;
+            } else {
+                rotateCamera(-Gdx.input.getDeltaX(1));
+            }
             
+//            if(Gdx.input.getX(1)!= 0) {
+//            	rotateCamera(-Gdx.input.getDeltaX(1));
+//            }
+            
+            if(cameraCanBeRotatedNow) {
+            	rotateCamera(-deltaX);
+            }
+            
+        } else {
+            rotateCamera(-deltaX);
         }
 
         // Update the player transform
@@ -93,7 +95,7 @@ public class PlayerController {
         }
 
         if (touchpad.getTouchpad().isTouched()) {
-
+            cameraCanBeRotatedNow = false;
             // here we handle the touchpad
             inTouchpad = true;
             mainGameClass.sprinting = false;
@@ -132,7 +134,7 @@ public class PlayerController {
         }
 
         if (!inTouchpad) {
-
+                cameraCanBeRotatedNow = true;
             // Erkka: here we read the touch dragged horizontally, outside the touchpad
 
             if (deltaX != 0) {
