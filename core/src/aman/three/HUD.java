@@ -28,7 +28,7 @@ public class HUD {
         sprintBtn = new ImageButton(sprintBtnStyle);
         sprintBtn.setWidth(150f);
         sprintBtn.setHeight(150f);
-        sprintBtn.setPosition(100f, 300f);
+        sprintBtn.setPosition(100f, 400f);
 
         sprintBtn.addListener(
                 new InputListener() {
