@@ -59,7 +59,7 @@ public class TouchPad {
                     @Override
                     public boolean touchDown(
                             InputEvent event, float x, float y, int pointer, int button) {
-                        isTouchpadTouched = false;
+                        
                         if (isTouchpadTouched == false) {
                             if (event.getTarget() != touchpad) {
 
@@ -78,9 +78,7 @@ public class TouchPad {
                                     isTouchpadTouched = true;
                                 }
                             }
-                        } else {
-                            isTouchpadTouched = false;
-                        }
+                        } 
 
                         return isTouchpadTouched;
                     }

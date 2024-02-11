@@ -53,13 +53,27 @@ public class MyGame extends ApplicationAdapter
     boolean sprinting = false;
     boolean isWalking = false;
 
-   
+   //player controller
+    PlayerController playerController;
+    
+    //Stage & batch
+    Batch batch;
+    Stage stage;
+    
+    //HUD
+    //HUD
+    HUD hud;
+    
+    
+    
+    
+    
+    
 
     // touchpad
-    Stage stage;
     public TouchPad touchpad;
-    Batch batch;
-    PlayerController playerController;
+    
+    
 
     
     
@@ -77,7 +91,7 @@ public class MyGame extends ApplicationAdapter
         playerController = new PlayerController();
         
         
-        HUD hud = new HUD();
+        hud = new HUD();
         hud.initializeHUD(this , stage);
         
         
@@ -215,6 +229,7 @@ public class MyGame extends ApplicationAdapter
         specularCubemap.dispose();
         brdfLUT.dispose();
         skybox.dispose();
+        
     }
 
     @Override

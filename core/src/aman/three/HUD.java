@@ -11,6 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class HUD {
     MyGame mainGameClass;
+    ImageButton sprintBtn;
+    
+    
+    
+    
     public void initializeHUD(MyGame game , Stage stage) {
     	this.mainGameClass = game;
         mainGameClass.touchpad = new TouchPad(stage);
@@ -20,11 +25,10 @@ public class HUD {
         Texture sprintBtnTexture = new Texture(Gdx.files.internal("sprint.png"));
         ImageButton.ImageButtonStyle sprintBtnStyle = new ImageButton.ImageButtonStyle();
         sprintBtnStyle.up = new TextureRegionDrawable(sprintBtnTexture);
-        ImageButton sprintBtn = new ImageButton(sprintBtnStyle);
+        sprintBtn = new ImageButton(sprintBtnStyle);
         sprintBtn.setWidth(150f);
         sprintBtn.setHeight(150f);
         sprintBtn.setPosition(100f, 300f);
-        
 
         sprintBtn.addListener(
                 new InputListener() {
