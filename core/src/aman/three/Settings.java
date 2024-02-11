@@ -7,5 +7,5 @@ public class Settings {
     public static final float CAMERA_ZOOM_LEVEL_FACTOR = 0.5F;
     public static final float CAMERA_MIN_DISTANCE_FROM_PLAYER = 4F;
     public static final float CAMERA_ANGLE_AROUND_PLAYER_FACTOR = 0.5F;
-    public static final float CAMERA_PITCH_FACTOR = 0.1F;
+    public static final float CAMERA_PITCH_FACTOR = 0.08F;
 }

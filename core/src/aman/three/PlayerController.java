@@ -21,6 +21,7 @@ public class PlayerController {
     private final Vector3 currentPosition = new Vector3();
 
     private float camPitch = Settings.CAMERA_START_PITCH;
+    float vectorToCalculateCameraRotation;
     public float distanceFromPlayer = 20f;
     private float angleAroundPlayer = 0f;
     private float angleBehindPlayer = 0f;
@@ -47,25 +48,6 @@ public class PlayerController {
     }
 
     public void processInput(float deltaTime) {
-
-        deltaX = Gdx.input.getDeltaX();
-
-        if (!mainGameClass.sprinting) {
-            if (Gdx.input.getX() > Gdx.graphics.getWidth() / 2) {
-                cameraCanBeRotatedNow = true;
-            } else {
-                rotateCamera(-Gdx.input.getDeltaX(1));
-            }
-            
-
-            
-            if(cameraCanBeRotatedNow) {
-            	rotateCamera(-deltaX);
-            }
-            
-        } else {
-            rotateCamera(-deltaX);
-        }
 
         // Update the player transform
         playerTransform.set(playerScene.modelInstance.transform);
@@ -132,7 +114,7 @@ public class PlayerController {
         }
 
         if (!inTouchpad) {
-                cameraCanBeRotatedNow = true;
+            cameraCanBeRotatedNow = true;
             // Erkka: here we read the touch dragged horizontally, outside the touchpad
 
             if (deltaX != 0) {
@@ -154,6 +136,24 @@ public class PlayerController {
         if (mainGameClass.sprinting) {
             moveTranslation.z += 10f * deltaTime;
         }
+        
+        deltaX = Gdx.input.getDeltaX();
+
+        if (!mainGameClass.sprinting) {
+            if (Gdx.input.getX() > Gdx.graphics.getWidth() / 2) {
+                cameraCanBeRotatedNow = true;
+            } else {
+                rotateCamera(-Gdx.input.getDeltaX(1));
+            }
+
+            if (cameraCanBeRotatedNow) {
+                rotateCamera(-deltaX);
+            }
+
+        } else {
+            rotateCamera(-deltaX);
+        }
+        
 
         // Apply the move translation to the transform
         playerTransform.translate(moveTranslation);
@@ -174,9 +174,8 @@ public class PlayerController {
 
         calculatePitch();
         calculateCameraPosition(currentPosition, -horDistance, vertDistance);
-
         camera.up.set(Vector3.Y);
-        camera.lookAt(currentPosition);
+        camera.lookAt(currentPosition.x , currentPosition.y + vectorToCalculateCameraRotation * 10, currentPosition.z);
         camera.update();
     }
 
@@ -253,19 +252,24 @@ public class PlayerController {
     }
 
     private void calculatePitch() {
+        float pitchChange = 0;
         if (Gdx.input.getX() > Gdx.graphics.getWidth() / 2) {
-            float pitchChange = -Gdx.input.getDeltaY() * Settings.CAMERA_PITCH_FACTOR;
+             pitchChange = -Gdx.input.getDeltaY() * Settings.CAMERA_PITCH_FACTOR;
             camPitch -= pitchChange;
         }
 
         if (Gdx.input.getX(1) > Gdx.graphics.getWidth() / 2) {
 
-            float pitchChange = -Gdx.input.getDeltaY(1) * Settings.CAMERA_PITCH_FACTOR;
+             pitchChange = -Gdx.input.getDeltaY(1) * Settings.CAMERA_PITCH_FACTOR;
             camPitch -= pitchChange;
         }
 
-        if (camPitch < Settings.CAMERA_MIN_PITCH) camPitch = Settings.CAMERA_MIN_PITCH;
-        else if (camPitch > Settings.CAMERA_MAX_PITCH) camPitch = Settings.CAMERA_MAX_PITCH;
+        if (camPitch < Settings.CAMERA_MIN_PITCH) {
+            camPitch = Settings.CAMERA_MIN_PITCH;
+             vectorToCalculateCameraRotation += pitchChange;
+            
+            
+        } else if (camPitch > Settings.CAMERA_MAX_PITCH) camPitch = Settings.CAMERA_MAX_PITCH;
     }
 
     private float calculateVerticalDistance(float distanceFromPlayer) {
