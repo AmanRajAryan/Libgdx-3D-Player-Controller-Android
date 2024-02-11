@@ -176,7 +176,7 @@ public class PlayerController {
         calculatePitch();
         calculateCameraPosition(currentPosition, -horDistance, vertDistance);
         camera.up.set(Vector3.Y);
-        camera.lookAt(currentPosition.x , currentPosition.y + floatToCalculateCameraRotation, currentPosition.z);
+        camera.lookAt(currentPosition.x , currentPosition.y + floatToCalculateCameraRotation * 1.2f, currentPosition.z);
         camera.update();
     }
 
@@ -261,8 +261,8 @@ public class PlayerController {
             if(Gdx.input.getDeltaY() > 0) {
             	if(floatToCalculateCameraRotation > 0) {
             		floatToCalculateCameraRotation += pitchChange;
-                    distanceFromPlayer -= pitchChange * 0.7 ;
-                    extraVerticalDistance -= pitchChange * 1.5;
+                    distanceFromPlayer -= pitchChange * 0.5;
+                    extraVerticalDistance -= pitchChange * 2.5;
             	}
             }
         }
@@ -271,15 +271,23 @@ public class PlayerController {
 
              pitchChange = -Gdx.input.getDeltaY(1) * Settings.CAMERA_PITCH_FACTOR;
             camPitch -= pitchChange;
+            
+            if(Gdx.input.getDeltaY(1) > 0) {
+            	if(floatToCalculateCameraRotation > 0) {
+            		floatToCalculateCameraRotation += pitchChange;
+                    distanceFromPlayer -= pitchChange * 0.5;
+                    extraVerticalDistance -= pitchChange * 2.5;
+            	}
+            }
         }
 
         if (camPitch < Settings.CAMERA_MIN_PITCH) {
             camPitch = Settings.CAMERA_MIN_PITCH;
              
-            if(floatToCalculateCameraRotation < 12){
+            if(floatToCalculateCameraRotation < 10){
             floatToCalculateCameraRotation += pitchChange;
-             distanceFromPlayer -= pitchChange * 0.7;
-            extraVerticalDistance -= pitchChange *1.5;
+             distanceFromPlayer -= pitchChange * 0.5;
+            extraVerticalDistance -= pitchChange *2.5;
             }
         } else if (camPitch > Settings.CAMERA_MAX_PITCH) camPitch = Settings.CAMERA_MAX_PITCH;
     }
