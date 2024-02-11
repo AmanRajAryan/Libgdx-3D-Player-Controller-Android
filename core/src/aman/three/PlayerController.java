@@ -1,5 +1,8 @@
 package aman.three;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import static java.lang.Math.atan2;
 
 import com.badlogic.gdx.Gdx;
@@ -30,6 +33,7 @@ public class PlayerController {
     boolean inTouchpad; // Erkka: if the touch is in the touchpad, false otherwise
     PerspectiveCamera camera;
     Scene playerScene;
+    Stage stage;
     TouchPad touchpad;
     int deltaX; // Erkka: a helper variable to store how much the touch has been dragged sideways
     float touchpadX; // Erkka: two more helper functions to store the touchpad knob position
@@ -40,15 +44,54 @@ public class PlayerController {
     float previousGetY;
     boolean cameraCanBeRotatedNow = false;
 
+    BitmapFont font = new BitmapFont();
+    Label.LabelStyle lableStyle = new Label.LabelStyle(font, Color.BLACK);
+    Label getXLabel = new Label("Label", lableStyle);
+    Label getYLabel = new Label("Label", lableStyle);
+    Label getY1Label = new Label("Label", lableStyle);
+    Label getX1Label = new Label("Label", lableStyle);
+    Label getDeltaYLabel = new Label("Label", lableStyle);
+    Label getDeltaY1Label = new Label("Label", lableStyle);
+
     public void createContoller(MyGame game) {
         this.mainGameClass = game;
-
+        this.stage = mainGameClass.stage;
         camera = mainGameClass.camera;
         playerScene = mainGameClass.playerScene;
         touchpad = mainGameClass.touchpad;
+
+        getXLabel.setFontScale(2);
+        getXLabel.setPosition(30, 700);
+        stage.addActor(getXLabel);
+
+        getX1Label.setFontScale(2);
+        getX1Label.setPosition(30, 670);
+        stage.addActor(getX1Label);
+
+        getYLabel.setFontScale(2);
+        getYLabel.setPosition(30, 640);
+        stage.addActor(getYLabel);
+
+        getY1Label.setFontScale(2);
+        getY1Label.setPosition(30, 610);
+        stage.addActor(getY1Label);
+
+        getDeltaYLabel.setFontScale(2);
+        getDeltaYLabel.setPosition(30, 580);
+        stage.addActor(getDeltaYLabel);
+
+        getDeltaY1Label.setFontScale(2);
+        getDeltaY1Label.setPosition(30, 550);
+        stage.addActor(getDeltaY1Label);
     }
 
     public void processInput(float deltaTime) {
+        getXLabel.setText("Gdx.input.getX() : " + Gdx.input.getX());
+        getX1Label.setText("Gdx.input.getX(1) : " + Gdx.input.getX(1));
+        getYLabel.setText("Gdx.input.getY() : " + Gdx.input.getY());
+        getY1Label.setText("Gdx.input.getY(1) : " + Gdx.input.getY(1));
+        getDeltaYLabel.setText("Gdx.input.getDeltaY() : " + Gdx.input.getDeltaY());
+        getDeltaY1Label.setText("Gdx.input.getDeltaY(1) : " + Gdx.input.getDeltaY(1));
 
         // Update the player transform
         playerTransform.set(playerScene.modelInstance.transform);
@@ -137,7 +180,7 @@ public class PlayerController {
         if (mainGameClass.sprinting) {
             moveTranslation.z += 10f * deltaTime;
         }
-        
+
         deltaX = Gdx.input.getDeltaX();
 
         if (!mainGameClass.sprinting) {
@@ -154,7 +197,6 @@ public class PlayerController {
         } else {
             rotateCamera(-deltaX);
         }
-        
 
         // Apply the move translation to the transform
         playerTransform.translate(moveTranslation);
@@ -176,7 +218,10 @@ public class PlayerController {
         calculatePitch();
         calculateCameraPosition(currentPosition, -horDistance, vertDistance);
         camera.up.set(Vector3.Y);
-        camera.lookAt(currentPosition.x , currentPosition.y + floatToCalculateCameraRotation * 1.2f, currentPosition.z);
+        camera.lookAt(
+                currentPosition.x,
+                currentPosition.y + floatToCalculateCameraRotation * 1.2f,
+                currentPosition.z);
         camera.update();
     }
 
@@ -255,39 +300,39 @@ public class PlayerController {
     private void calculatePitch() {
         float pitchChange = 0;
         if (Gdx.input.getX() > Gdx.graphics.getWidth() / 2) {
-             pitchChange = -Gdx.input.getDeltaY() * Settings.CAMERA_PITCH_FACTOR;
+            pitchChange = -Gdx.input.getDeltaY() * Settings.CAMERA_PITCH_FACTOR;
             camPitch -= pitchChange;
-            
-            if(Gdx.input.getDeltaY() > 0) {
-            	if(floatToCalculateCameraRotation > 0) {
-            		floatToCalculateCameraRotation += pitchChange;
+
+            if (Gdx.input.getDeltaY() > 0) {
+                if (floatToCalculateCameraRotation > 0) {
+                    floatToCalculateCameraRotation += pitchChange;
                     distanceFromPlayer -= pitchChange * 0.5;
                     extraVerticalDistance -= pitchChange * 2.5;
-            	}
+                }
             }
         }
 
         if (Gdx.input.getX(1) > Gdx.graphics.getWidth() / 2) {
 
-             pitchChange = -Gdx.input.getDeltaY(1) * Settings.CAMERA_PITCH_FACTOR;
+            pitchChange = -Gdx.input.getDeltaY(1) * Settings.CAMERA_PITCH_FACTOR;
             camPitch -= pitchChange;
-            
-            if(Gdx.input.getDeltaY(1) > 0) {
-            	if(floatToCalculateCameraRotation > 0) {
-            		floatToCalculateCameraRotation += pitchChange;
+
+            if (Gdx.input.getDeltaY(1) > 0) {
+                if (floatToCalculateCameraRotation > 0) {
+                    floatToCalculateCameraRotation += pitchChange;
                     distanceFromPlayer -= pitchChange * 0.5;
                     extraVerticalDistance -= pitchChange * 2.5;
-            	}
+                }
             }
         }
 
         if (camPitch < Settings.CAMERA_MIN_PITCH) {
             camPitch = Settings.CAMERA_MIN_PITCH;
-             
-            if(floatToCalculateCameraRotation < 10){
-            floatToCalculateCameraRotation += pitchChange;
-             distanceFromPlayer -= pitchChange * 0.5;
-            extraVerticalDistance -= pitchChange *2.5;
+
+            if (floatToCalculateCameraRotation < 10) {
+                floatToCalculateCameraRotation += pitchChange;
+                distanceFromPlayer -= pitchChange * 0.5;
+                extraVerticalDistance -= pitchChange * 2.5;
             }
         } else if (camPitch > Settings.CAMERA_MAX_PITCH) camPitch = Settings.CAMERA_MAX_PITCH;
     }
