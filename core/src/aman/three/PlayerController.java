@@ -22,7 +22,7 @@ public class PlayerController {
 
     private float camPitch = Settings.CAMERA_START_PITCH;
     float floatToCalculateCameraRotation;
-    float extraVerticalDistance = 20;
+    float extraVerticalDistance = 15;
     public float distanceFromPlayer = 20f;
     private float angleAroundPlayer = 0f;
     private float angleBehindPlayer = 0f;
