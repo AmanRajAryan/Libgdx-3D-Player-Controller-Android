@@ -60,9 +60,9 @@ public class TouchPad {
                     public boolean touchDown(
                             InputEvent event, float x, float y, int pointer, int button) {
                         boolean isScreenTouched = false;
-                        touchPointerIndex = pointer;
-                        if (touchPointerIndex == pointer) {
 
+                        if (touchPointerIndex == -1) {
+                            touchPointerIndex = pointer;
                             if (event.getTarget() != touchpad) {
 
                                 if (x < Gdx.graphics.getWidth() / 2) {
@@ -86,7 +86,7 @@ public class TouchPad {
 
                     @Override
                     public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                            
+
                         if (touchPointerIndex == pointer) {
 
                             touchpad.stageToLocalCoordinates(p.set(x, y));
@@ -114,9 +114,13 @@ public class TouchPad {
                     public void touchUp(
                             InputEvent event, float x, float y, int pointer, int button) {
                         // Put the touchpad back to its original position
-                        touchPointerIndex = -1;
+                        if (pointer == touchPointerIndex) {
+
+                            touchPointerIndex = -1;
                         touchpad.clearActions();
                         touchpad.addAction(Actions.moveTo(110, 110, 0.15f));
+                        }
+                        
                     }
                 });
     }
