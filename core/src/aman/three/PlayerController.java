@@ -24,7 +24,7 @@ public class PlayerController {
     private final Vector3 currentPosition = new Vector3();
 
     private float camPitch = Settings.CAMERA_START_PITCH;
-    float floatToCalculateCameraRotation;
+    float floatToCalculateCameraRotation = 0f;
     float extraVerticalDistance = 15;
     public float distanceFromPlayer = 20f;
     private float angleAroundPlayer = 0f;
@@ -52,6 +52,9 @@ public class PlayerController {
     Label getX1Label = new Label("Label", lableStyle);
     Label getDeltaYLabel = new Label("Label", lableStyle);
     Label getDeltaY1Label = new Label("Label", lableStyle);
+    Label camPitchLabel = new Label("Label", lableStyle);
+    Label floatToCalculateCamRotationLabel = new Label("Label", lableStyle);
+    Label pitchChangeLabel = new Label("Label", lableStyle);
 
     public void createContoller(MyGame game) {
         this.mainGameClass = game;
@@ -83,6 +86,18 @@ public class PlayerController {
         getDeltaY1Label.setFontScale(2);
         getDeltaY1Label.setPosition(30, 550);
         stage.addActor(getDeltaY1Label);
+
+        camPitchLabel.setFontScale(2);
+        camPitchLabel.setPosition(30, 520);
+        stage.addActor(camPitchLabel);
+
+        floatToCalculateCamRotationLabel.setFontScale(2);
+        floatToCalculateCamRotationLabel.setPosition(30, 490);
+        stage.addActor(floatToCalculateCamRotationLabel);
+
+        pitchChangeLabel.setFontScale(2);
+        pitchChangeLabel.setPosition(30, 460);
+        stage.addActor(pitchChangeLabel);
     }
 
     public void processInput(float deltaTime) {
@@ -299,32 +314,45 @@ public class PlayerController {
 
     private void calculatePitch() {
         float pitchChange = 0;
-        if (Gdx.input.getX() > Gdx.graphics.getWidth() / 2) {
-            pitchChange = -Gdx.input.getDeltaY() * Settings.CAMERA_PITCH_FACTOR;
-            camPitch -= pitchChange;
 
-            if (Gdx.input.getDeltaY() > 0) {
-                if (floatToCalculateCameraRotation > 0) {
-                    floatToCalculateCameraRotation += pitchChange;
-                    distanceFromPlayer -= pitchChange * 0.5;
-                    extraVerticalDistance -= pitchChange * 2.5;
+        
+
+        floatToCalculateCamRotationLabel.setText(
+                "floatToCalculateCameraRotation : " + floatToCalculateCameraRotation);
+
+        if (Gdx.input.isTouched(0)) {
+            if (Gdx.input.getX(0) > Gdx.graphics.getWidth() / 2) {
+                pitchChange = -Gdx.input.getDeltaY(0) * Settings.CAMERA_PITCH_FACTOR;
+                camPitch -= pitchChange;
+
+                // touch drag is downward
+                if (Gdx.input.getDeltaY(0) > 0) {
+                    if (floatToCalculateCameraRotation > 0) {
+                        floatToCalculateCameraRotation += pitchChange;
+                        distanceFromPlayer -= pitchChange * 0.5;
+                        extraVerticalDistance -= pitchChange * 2.5;
+                    }
+                }
+            }
+        }
+        if (Gdx.input.isTouched(1)) {
+            if (Gdx.input.getX(1) > Gdx.graphics.getWidth() / 2) {
+                pitchChange = -Gdx.input.getDeltaY(1) * Settings.CAMERA_PITCH_FACTOR;
+                camPitch -= pitchChange;
+
+                // touch drag is downward
+                if (Gdx.input.getDeltaY(1) > 0) {
+                    if (floatToCalculateCameraRotation > 0) {
+                        floatToCalculateCameraRotation += pitchChange;
+                        distanceFromPlayer -= pitchChange * 0.5;
+                        extraVerticalDistance -= pitchChange * 2.5;
+                    }
                 }
             }
         }
 
-        if (Gdx.input.getX(1) > Gdx.graphics.getWidth() / 2) {
-
-            pitchChange = -Gdx.input.getDeltaY(1) * Settings.CAMERA_PITCH_FACTOR;
-            camPitch -= pitchChange;
-
-            if (Gdx.input.getDeltaY(1) > 0) {
-                if (floatToCalculateCameraRotation > 0) {
-                    floatToCalculateCameraRotation += pitchChange;
-                    distanceFromPlayer -= pitchChange * 0.5;
-                    extraVerticalDistance -= pitchChange * 2.5;
-                }
-            }
-        }
+        camPitchLabel.setText("camPitch : " + camPitch);
+        pitchChangeLabel.setText("pitchChange : " + pitchChange);
 
         if (camPitch < Settings.CAMERA_MIN_PITCH) {
             camPitch = Settings.CAMERA_MIN_PITCH;
